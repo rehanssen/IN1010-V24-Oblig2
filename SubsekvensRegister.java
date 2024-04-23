@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -33,15 +34,15 @@ public class SubsekvensRegister {
             String linje = "";
             while (sc.hasNextLine()) {
                 linje = sc.nextLine();
-            if (linje.length() < 3) {   //Kan ikke lese substringer med lengde 3 fra linje med færre enn 3 tegn.
-                System.exit(-1);
-            }
-            for (int i=0; i<linje.length() - 3; i++) {
-                String sekvens = linje.substring(i, i+3);
-                if (!nyHash.containsKey(sekvens)) {
-                    nyHash.put(sekvens, new Subsekvens(sekvens));
+                if (linje.length() < 3) {   //Kan ikke lese substringer med lengde 3 fra linje med færre enn 3 tegn.
+                    System.exit(-1);
                 }
-            }
+                for (int i=0; i<linje.length() - 2; i++) {
+                    String sekvens = linje.substring(i, i+3);
+                    if (!nyHash.containsKey(sekvens)) {
+                        nyHash.put(sekvens, new Subsekvens(sekvens));
+                    }
+                }
             }
 
             sc.close();
@@ -53,4 +54,23 @@ public class SubsekvensRegister {
         //beholder.add(nyHash);
         return nyHash;
     }
+
+    public static HashMap<String, Subsekvens> slaaSammenHash(HashMap<String, Subsekvens> h1, HashMap<String, Subsekvens> h2) {
+        HashMap<String, Subsekvens> nyHash = new HashMap<>();
+        nyHash.putAll(h1);
+        
+        for (Map.Entry<String, Subsekvens> set : h2.entrySet()) {
+            if (nyHash.containsKey(set.getKey())) {
+                nyHash.get(set.getKey()).oekAntall();
+            }
+            else {
+                nyHash.put(set.getKey(), set.getValue());
+            }
+
+        }
+
+        return nyHash;
+    }
+
+
 }

@@ -1,10 +1,14 @@
 public class Subsekvens {
-    protected String subsekvens;
-    protected final int antall;
+    protected final String subsekvens;
+    protected int antall;
 
     public Subsekvens(String s) {
         this.subsekvens = s;
         antall = 1;
+    }
+
+    public void oekAntall() {
+        this.antall++;
     }
 
     @Override
