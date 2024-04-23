@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 import java.io.File;
+import java.io.FileNotFoundException;
 
 
 public class SubsekvensRegister {
@@ -26,22 +27,30 @@ public class SubsekvensRegister {
     public static HashMap<String, Subsekvens> lesFil(String filbane) {
         HashMap<String, Subsekvens> nyHash = new HashMap<>();
         File fil = new File(filbane);
-        Scanner sc = new Scanner(fil);
-        String linje = "";
-        while (sc.hasNextLine()) {
-            linje = sc.nextLine();
+        try {
+
+            Scanner sc = new Scanner(fil);
+            String linje = "";
+            while (sc.hasNextLine()) {
+                linje = sc.nextLine();
             if (linje.length() < 3) {   //Kan ikke lese substringer med lengde 3 fra linje med færre enn 3 tegn.
                 System.exit(-1);
             }
             for (int i=0; i<linje.length() - 3; i++) {
                 String sekvens = linje.substring(i, i+3);
                 if (!nyHash.containsKey(sekvens)) {
-                    nyHash.put(sekvens, 1);
+                    nyHash.put(sekvens, new Subsekvens(sekvens));
                 }
             }
+            }
+
+            sc.close();
+        }
+        catch (FileNotFoundException e) {
+            System.err.println(e.getMessage());
         }
 
-        beholder.add(nyHash);
+        //beholder.add(nyHash);
         return nyHash;
     }
 }
