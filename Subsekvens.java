@@ -11,6 +11,10 @@ public class Subsekvens {
         this.antall++;
     }
 
+    public int getAntall() {
+        return this.antall;
+    }
+
     @Override
     public String toString() {
         return "(" + this.subsekvens + "," + this.antall + ")";

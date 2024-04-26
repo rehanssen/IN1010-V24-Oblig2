@@ -1,6 +1,5 @@
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Scanner;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -19,6 +18,10 @@ public class SubsekvensRegister {
 
     public HashMap<String, Subsekvens> taUtHashMap(int indeks) {
         return beholder.get(indeks);
+    }
+
+    public HashMap<String, Subsekvens> removeHashMap(int indeks) {
+        return beholder.remove(indeks);
     }
 
     public int getAntallHashMaps() {
@@ -50,27 +53,65 @@ public class SubsekvensRegister {
         catch (FileNotFoundException e) {
             System.err.println(e.getMessage());
         }
-
+        
         //beholder.add(nyHash);
         return nyHash;
     }
+    
 
-    public static HashMap<String, Subsekvens> slaaSammenHash(HashMap<String, Subsekvens> h1, HashMap<String, Subsekvens> h2) {
-        HashMap<String, Subsekvens> nyHash = new HashMap<>();
-        nyHash.putAll(h1);
-        
-        for (Map.Entry<String, Subsekvens> set : h2.entrySet()) {
-            if (nyHash.containsKey(set.getKey())) {
-                nyHash.get(set.getKey()).oekAntall();
+    /* 
+     * Hjelpemetode. Forutsetter at beholders ArrayList inneholder én HashMap
+     * Returnerer den første forekomsten av Subsekvens med høyest antall forekomster (Dersom 2 ulike har samme høyeste antall er det bare én som returneres.)
+     * Returnerer en Subsekvens
+     */
+    public Subsekvens hentHyppigsteSubsekvens() {
+        Subsekvens tmp = null;
+        for (Subsekvens ss : beholder.get(0).values()) {
+            if (tmp != null) {
+                if (ss.getAntall() > tmp.getAntall()) {
+                    tmp = ss;
+                }
+            } else {
+                tmp = ss;
             }
-            else {
-                nyHash.put(set.getKey(), set.getValue());
-            }
-
         }
 
-        return nyHash;
+        return tmp;
     }
+
+
+
+
+
+    public static HashMap<String, Subsekvens> slaaSammenHash(HashMap<String, Subsekvens> h1, HashMap<String, Subsekvens> h2) {
+        
+        for (String s : h2.keySet()) {
+            if (h1.containsKey(s)) {
+                h1.get(s).antall = h1.get(s).getAntall() + h2.get(s).getAntall();
+            } else {
+                h1.putIfAbsent(s, h2.get(s));
+            }
+        }
+
+        return h1;
+
+
+        // HashMap<String, Subsekvens> nyHash = new HashMap<>();
+        // nyHash.putAll(h1);
+        
+        // for (Map.Entry<String, Subsekvens> set : h2.entrySet()) {
+        //     if (nyHash.containsKey(set.getKey())) {
+        //         nyHash.get(set.getKey()).oekAntall();
+        //     }
+        //     else {
+        //         nyHash.put(set.getKey(), set.getValue());
+        //     }
+
+        // }
+
+        // return nyHash;
+    }
+
 
 
 }
